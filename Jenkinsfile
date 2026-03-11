@@ -4,7 +4,7 @@ pipeline {
 
     tools {
         maven 'Maven'
-        jdk 'JDK22'
+        jdk 'JDK21'
     }
 
     stages {
@@ -35,3 +35,24 @@ pipeline {
                 }
             }
         }
+
+        stage('Build with Maven') {
+            steps {
+                bat 'mvn clean package'
+            }
+        }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                bat 'copy target\\*.war "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"'
+            }
+        }
+
+        stage('Start Tomcat Server') {
+            steps {
+                bat '"C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\bin\\startup.bat"'
+            }
+        }
+
+    }
+}
